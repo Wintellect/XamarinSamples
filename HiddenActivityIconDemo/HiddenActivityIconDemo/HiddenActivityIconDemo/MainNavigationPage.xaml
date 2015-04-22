@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="HiddenActivityIconDemo.MainNavigationPage"
+             Title="Home">
+  <TableView HorizontalOptions="Fill" VerticalOptions="Fill" Intent="Menu">
+    <TableSection Title="Text Examples">
+      <TextCell Text="Built-in Label Styles" Tapped="ShowStyles" />
+      <TextCell Text="Built-in Font Sizes" Tapped="ShowSizes" />
+      <TextCell Text="Built-in Font Attributes" Tapped="ShowAttributes" />
+    </TableSection>
+  </TableView>
+</ContentPage>
