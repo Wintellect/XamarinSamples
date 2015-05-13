@@ -1,4 +1,4 @@
-﻿module OpenUrl
+﻿namespace OpenUrl
 
 open UIKit
 open Foundation

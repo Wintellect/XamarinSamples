@@ -1,4 +1,4 @@
-﻿module MainPage
+﻿namespace MainPage
 
 open Xamarin.Forms
 open PhoneWordFSharp.Core
@@ -7,7 +7,7 @@ type IOpenUrlService =
     abstract member OpenUrl: string -> bool 
 
 type MainPage() =
-    static member GetMainPage =
+    static member GetMainPage() =
        let contentPage = new ContentPage()
        let panel = new StackLayout()
        let phoneNumberText = new Entry()
@@ -33,9 +33,9 @@ type MainPage() =
         )
 
        callButton.Clicked.Add(fun _ ->
-           let isCalling = contentPage.DisplayAlert("Dial a number", "Would you like to call " + phoneNumberText.Text, "Yes", "No")
+           let isCalling = contentPage.DisplayAlert("Dial a number", "Would you like to call " + phoneNumberText.Text, "Yes", "No").Result
 
-           match isCalling.Result with
+           match isCalling with
             | true -> let dialer = DependencyService.Get<IOpenUrlService>()
                       dialer.OpenUrl phoneNumberText.Text |> ignore
             | false -> ()
@@ -51,4 +51,4 @@ type MainPage() =
        contentPage
 
 type App() =
-    inherit Application(MainPage = MainPage.GetMainPage)
+    inherit Application(MainPage = MainPage.GetMainPage())

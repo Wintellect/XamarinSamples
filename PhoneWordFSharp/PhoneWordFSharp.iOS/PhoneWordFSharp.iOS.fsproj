@@ -9,7 +9,7 @@
     <RootNamespace>PhoneWordFSharp.iOS</RootNamespace>
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
     <AssemblyName>PhoneWordFSharpiOS</AssemblyName>
-    <SelectedDevice>iPhone 6 iOS 8.3</SelectedDevice>
+    <SelectedDevice>iPhone 5s iOS 8.3</SelectedDevice>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhoneSimulator' ">
     <DebugSymbols>true</DebugSymbols>
@@ -20,6 +20,8 @@
     <MtouchProfiling>true</MtouchProfiling>
     <MtouchLink>None</MtouchLink>
     <MtouchArch>i386</MtouchArch>
+    <OtherFlags>
+    </OtherFlags>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhoneSimulator' ">
     <OutputPath>bin\iPhoneSimulator\Release</OutputPath>
