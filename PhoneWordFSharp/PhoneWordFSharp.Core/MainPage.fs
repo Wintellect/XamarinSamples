@@ -2,52 +2,44 @@
 
 open Xamarin.Forms
 open PhoneWordFSharp.Core
+open System.Collections.Generic
+open System.Runtime.CompilerServices
+
+[<Extension>]
+type IListExtensions () =
+    [<Extension>]
+    static member inline AddRange(xs:'a IList, range) = range |> Seq.iter xs.Add
 
 type IOpenUrlService =
     abstract member OpenUrl: string -> bool 
 
 type MainPage() =
     static member GetMainPage() =
-       let contentPage = new ContentPage()
-       let panel = new StackLayout()
-       let phoneNumberText = new Entry()
-       let translateButton = new Button()
-       let callButton = new Button()
-       let transator = PhoneTranslator()
+       let contentPage = ContentPage(Padding = Thickness(20., Device.OnPlatform(40., 20., 20.), 20., 20.))
+       let panel = StackLayout(VerticalOptions = LayoutOptions.FillAndExpand, 
+                               HorizontalOptions = LayoutOptions.FillAndExpand, 
+                               Orientation = StackOrientation.Vertical, 
+                               Spacing = 15.)
+       let phoneNumberText = Entry(Text = "1-855-XAMARIN")
+       let translateButton = Button(Text = "Translate")
+       let callButton = Button(Text = "Call", IsEnabled = false)
 
-       contentPage.Padding <- new Thickness(20., Device.OnPlatform(40., 20., 20.), 20., 20.)
-
-       panel.VerticalOptions <- LayoutOptions.FillAndExpand
-       panel.HorizontalOptions <- LayoutOptions.FillAndExpand
-       panel.Orientation <- StackOrientation.Vertical
-       panel.Spacing <- 15.
-
-       phoneNumberText.Text <- "1-855-XAMARIN"
-       translateButton.Text <- "Translate"
-       callButton.Text <- "Call"
-       callButton.IsEnabled <- false
-
-       translateButton.Clicked.Add(fun _ -> 
-            callButton.Text <- transator.toNumber phoneNumberText.Text
-            callButton.IsEnabled <- true
-        )
+       translateButton.Clicked.Add(fun _ -> callButton.Text <- PhoneTranslator.toNumber phoneNumberText.Text
+                                            callButton.IsEnabled <- true)
 
        callButton.Clicked.Add(fun _ ->
            let isCalling = contentPage.DisplayAlert("Dial a number", "Would you like to call " + phoneNumberText.Text, "Yes", "No").Result
 
-           match isCalling with
-            | true -> let dialer = DependencyService.Get<IOpenUrlService>()
-                      dialer.OpenUrl phoneNumberText.Text |> ignore
-            | false -> ()
-       )
+           if isCalling then
+             let dialer = DependencyService.Get<IOpenUrlService>()
+             dialer.OpenUrl phoneNumberText.Text |> ignore)
 
-       panel.Children.Add(new Label(Text = "Enter a Phoneword:"))
-       panel.Children.Add(phoneNumberText)
-       panel.Children.Add(translateButton)
-       panel.Children.Add(callButton)
+       panel.Children.AddRange([Label(Text = "Enter a Phoneword:")
+                                phoneNumberText
+                                translateButton
+                                callButton])
 
        contentPage.Content <- panel
-
        contentPage
 
 type App() =
