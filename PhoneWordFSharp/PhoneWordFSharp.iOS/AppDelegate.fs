@@ -15,16 +15,14 @@ open Xamarin.Forms.Platform.iOS
 type AppDelegate() = 
     inherit FormsApplicationDelegate()
 
-    member val Window = null with get, set
+    override val Window = null with get, set
 
     // This method is invoked when the application is ready to run.
     override this.FinishedLaunching(app, options) = 
         this.Window <- new UIWindow(UIScreen.MainScreen.Bounds)
-
         Xamarin.Forms.Forms.Init()
-
         this.LoadApplication(App())
-        true
+        base.FinishedLaunching(app, options)
 
 module Main = 
     [<EntryPoint>]
