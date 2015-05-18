@@ -19,6 +19,10 @@ type AppDelegate() =
 
     // This method is invoked when the application is ready to run.
     override this.FinishedLaunching(app, options) = 
+        #if DEBUG
+        Xamarin.Calabash.Start()
+        #endif
+        
         this.Window <- new UIWindow(UIScreen.MainScreen.Bounds)
         Xamarin.Forms.Forms.Init()
         this.LoadApplication(App())
