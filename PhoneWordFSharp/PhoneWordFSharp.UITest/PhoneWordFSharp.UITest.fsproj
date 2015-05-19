@@ -51,9 +51,10 @@
   <Import Project="$(FSharpTargetsPath)" />
   <ItemGroup>
     <Compile Include="AssemblyInfo.fs" />
-    <Compile Include="Library1.fs" />
+    <Compile Include="CrossPlatformTests.fs" />
     <Content Include="packages.config" />
     <Content Include="app.config" />
+    <Compile Include="iOSTests.fs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="FsUnit.NUnit">

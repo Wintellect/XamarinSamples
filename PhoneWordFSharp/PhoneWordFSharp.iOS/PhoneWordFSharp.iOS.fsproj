@@ -22,6 +22,7 @@
     <MtouchArch>i386</MtouchArch>
     <OtherFlags>
     </OtherFlags>
+    <BuildIpa>True</BuildIpa>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhoneSimulator' ">
     <OutputPath>bin\iPhoneSimulator\Release</OutputPath>
