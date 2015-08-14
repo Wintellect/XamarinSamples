@@ -11,7 +11,7 @@
 		<BoxView Color="#BCBCBC" HeightRequest="1" />
 
 		<Label Text="Calculate" FontAttributes="Bold" FontSize="14" HorizontalOptions="Center" VerticalOptions="Center" />
-		<Button HorizontalOptions="Center" VerticalOptions="Center" Text="2 + 2 = ?" Clicked="CalculateClicked" />
+		<Button HorizontalOptions="Center" VerticalOptions="Center" Text="{Binding AddString}" Clicked="CalculateClicked" />
 	</StackLayout>
 
 
