@@ -5,9 +5,15 @@ namespace UITestDemo
 {
     public partial class MainPage : ContentPage
     {
+        MainPageViewModel _mainViewModel;
+
         public MainPage()
         {
             InitializeComponent();
+
+            _mainViewModel = new MainPageViewModel();
+
+            BindingContext = _mainViewModel;
         }
 
         async void DetailClicked(object sender, EventArgs args)
@@ -17,7 +23,7 @@ namespace UITestDemo
 
         void CalculateClicked(object sender, EventArgs args)
         {
-            Add.AddItems(2, 2); 
+            _mainViewModel.UpdateButtonText();
         }
     }
 }
