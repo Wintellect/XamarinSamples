@@ -11,7 +11,7 @@ namespace ShareExample.iOS
     {
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
-            global::Xamarin.Forms.Forms.Init();
+            Forms.Init();
 
             // Code for starting up the Xamarin Test Cloud Agent
             #if ENABLE_TEST_CLOUD
@@ -28,9 +28,9 @@ namespace ShareExample.iOS
         async void Share (ImageSource imageSource)
         {
             var handler = new ImageLoaderSourceHandler();
-            var bytes = await handler.LoadImageAsync(imageSource);
+            var uiImage = await handler.LoadImageAsync(imageSource);
 
-            var item = NSObject.FromObject (bytes);
+            var item = NSObject.FromObject (uiImage);
             var activityItems = new[] { item }; 
             var activityController = new UIActivityViewController (activityItems, null);
 
@@ -38,8 +38,7 @@ namespace ShareExample.iOS
             while (topController.PresentedViewController != null) {
                 topController = topController.PresentedViewController;
             }
-            topController.PresentViewController (activityController, true, () => {
-            });
+            topController.PresentViewController (activityController, true, () => {});
         }
     }
 }
