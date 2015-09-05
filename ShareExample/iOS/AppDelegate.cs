@@ -2,12 +2,11 @@
 using UIKit;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.iOS;
-using System.Threading.Tasks;
 
 namespace ShareExample.iOS
 {
     [Register("AppDelegate")]
-    public partial class AppDelegate : global::Xamarin.Forms.Platform.iOS.FormsApplicationDelegate
+    public partial class AppDelegate : FormsApplicationDelegate
     {
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
@@ -35,9 +34,11 @@ namespace ShareExample.iOS
             var activityController = new UIActivityViewController (activityItems, null);
 
             var topController = UIApplication.SharedApplication.KeyWindow.RootViewController;
+
             while (topController.PresentedViewController != null) {
                 topController = topController.PresentedViewController;
             }
+
             topController.PresentViewController (activityController, true, () => {});
         }
     }
