@@ -6,11 +6,11 @@ Target "Test" (fun _ ->
     trace "Testing stuff..."
 )
 
-Target "Deploy" (fun _ ->
-    trace "Heavy deploy action"
+Target "Build" (fun _ ->
+    trace "Heavy build action"
 )
 
-"Test"            // define the dependencies
-   ==> "Deploy"
+"Build"            // define the dependencies
+   ==> "Test"
 
-Run "Deploy"
+Run "Test"
