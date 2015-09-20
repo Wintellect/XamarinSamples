@@ -1,6 +1,5 @@
 ﻿#r "packages/FAKE/tools/FakeLib.dll"
-open Fake 
-
+open Fake
 
 Target "Test" (fun _ ->
     trace "Testing stuff..."
