@@ -1,5 +1,5 @@
-#r "packages/FAKE/tools/FakeLib.dll" // 1
-open Fake // 2
+#r "packages/FAKE/tools/FakeLib.dll"
+open Fake
 open Fake.XamarinHelper
 
 let buildDir = "FakeDemo/bin/Debug"
@@ -8,12 +8,12 @@ Target "Clean" (fun _ ->
     CleanDir buildDir
 )
 
-Target "Test" (fun _ -> // 3
+Target "Test" (fun _ ->
     trace "Testing stuff..."
 )
 
 Target "BuildPcl" (fun _ ->
-    //RestorePackages ()
+    RestorePackages ()
 
     !! "FakeDemo.csproj"
         |> MSBuild "FakeDemo/bin/Debug" "Build"  [ ("Configuration", "Debug"); ("Platform", "Any CPU") ] 
@@ -36,12 +36,11 @@ Target "Build-Droid" (fun _ ->
         |> Log "----Android build output----"
 )
 
-"BuildPcl" // 4
+"BuildPcl"
    ==> "Clean"
    ==> "Test"
 
 "Build-Droid"
    ==> "Build-iOS"
 
-
-RunTargetOrDefault "Test" // 5
+RunTargetOrDefault "Test"
