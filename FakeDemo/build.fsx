@@ -12,8 +12,9 @@ Target "Test" (fun _ ->
     trace "Testing stuff..."
 )
 
-Target "BuildPcl" (fun _ ->
-    RestorePackages ()
+Target "Build-Pcl" (fun _ ->
+    "FakeDemo/packages.config"
+        |> RestorePackage (fun defaults -> defaults)
 
     !! "FakeDemo.csproj"
         |> MSBuild "FakeDemo/bin/Debug" "Build"  [ ("Configuration", "Debug"); ("Platform", "Any CPU") ] 
@@ -36,11 +37,8 @@ Target "Build-Droid" (fun _ ->
         |> Log "----Android build output----"
 )
 
-"BuildPcl"
-   ==> "Clean"
-   ==> "Test"
-
-"Build-Droid"
-   ==> "Build-iOS"
+"Clean"
+  ==> "Build-Pcl"
+  ==> "Test"
 
 RunTargetOrDefault "Test"
