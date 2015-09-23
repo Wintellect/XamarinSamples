@@ -13,8 +13,7 @@ Target "Test" (fun _ ->
 )
 
 Target "Build-Pcl" (fun _ ->
-    "FakeDemo/packages.config"
-        |> RestorePackage (fun defaults -> defaults)
+    RestorePackages()
 
     !! "FakeDemo.csproj"
         |> MSBuild "FakeDemo/bin/Debug" "Build"  [ ("Configuration", "Debug"); ("Platform", "Any CPU") ] 
