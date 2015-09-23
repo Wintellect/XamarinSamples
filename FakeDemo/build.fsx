@@ -40,4 +40,9 @@ Target "Build-Droid" (fun _ ->
   ==> "Build-Pcl"
   ==> "Test"
 
+"Clean"
+  ==> "Build-Pcl"
+  ==> "Build-iOS"
+  ==> "Build-Droid"
+
 RunTargetOrDefault "Test"
