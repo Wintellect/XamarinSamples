@@ -8,10 +8,25 @@ Target "Clean" (fun _ ->
     CleanDir buildDir
 )
 
-Target "Test" (fun _ ->
+Target "Build-UnitTests" (fun _ ->
+    !! "FakeDemo.UnitTests/FakeDemo.UnitTests.csproj"
+        |> MSBuild "FakeDemo.UnitTests\bin\Debug" "Build" [ ("Configuration", "Debug"); ("Platform", "Any CPU") ]
+        |> Log "---Unit Test build output----"
+)
+
+Target "Run-UnitTests" (fun _ ->
     let testDll = !! "FakeDemo.UnitTests/FakeDemo.UnitTests.csproj"
 
-    testDll |> NUnit ( fun defaults -> defaults)
+    testDll |> NUnit ( fun defaults -> 
+        { 
+            defaults with ToolPath = "/Library/Frameworks/Mono.framework/Commands/"
+                          ToolName = "nunit-console4" 
+                          WorkingDir = "FakeDemo.UnitTests\bin\Debug"
+        })
+)
+
+Target "Run-UITests" (fun _ ->
+    trace "UI Tests"
 )
 
 Target "Build-Pcl" (fun _ ->
@@ -39,12 +54,12 @@ Target "Build-Droid" (fun _ ->
 )
 
 "Clean"
-  ==> "Build-Pcl"
-  ==> "Test"
+  ==> "Build-UnitTests"
+  ==> "Run-UnitTests"
 
 "Clean"
   ==> "Build-Pcl"
   ==> "Build-iOS"
   ==> "Build-Droid"
 
-RunTargetOrDefault "Test"
+RunTargetOrDefault "Run-UnitTests"
