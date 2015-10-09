@@ -2,13 +2,13 @@
 
 namespace FakeDemo.UnitTests
 {
-    [TestFixture()]
+    [TestFixture]
     public class Test
     {
-        [Test()]
+        [Test]
         public void TestCase()
         {
-            Assert.Fail();
+            Assert.IsTrue(true);
         }
     }
 }

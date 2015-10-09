@@ -3,25 +3,26 @@ open Fake
 open Fake.XamarinHelper
 
 let buildDir = "FakeDemo/bin/Debug"
+let testProj = !! "FakeDemo.UnitTests/FakeDemo.UnitTests.csproj"
+let testDll = !! "FakeDemo.UnitTests/bin/Debug/FakeDemo.UnitTests.dll"
 
 Target "Clean" (fun _ ->
     CleanDir buildDir
 )
 
 Target "Build-UnitTests" (fun _ ->
-    !! "FakeDemo.UnitTests/FakeDemo.UnitTests.csproj"
+    testProj
         |> MSBuild "FakeDemo.UnitTests\bin\Debug" "Build" [ ("Configuration", "Debug"); ("Platform", "Any CPU") ]
         |> Log "---Unit Test build output----"
 )
 
 Target "Run-UnitTests" (fun _ ->
-    let testDll = !! "FakeDemo.UnitTests/FakeDemo.UnitTests.csproj"
-
     testDll |> NUnit ( fun defaults -> 
         { 
             defaults with ToolPath = "/Library/Frameworks/Mono.framework/Commands/"
                           ToolName = "nunit-console4" 
                           WorkingDir = "FakeDemo.UnitTests\bin\Debug"
+                          DisableShadowCopy = true
         })
 )
 
