@@ -9,7 +9,9 @@ Target "Clean" (fun _ ->
 )
 
 Target "Test" (fun _ ->
-    trace "Testing stuff..."
+    let testDll = !! "FakeDemo.UnitTests/FakeDemo.UnitTests.csproj"
+
+    testDll |> NUnit ( fun defaults -> defaults)
 )
 
 Target "Build-Pcl" (fun _ ->
