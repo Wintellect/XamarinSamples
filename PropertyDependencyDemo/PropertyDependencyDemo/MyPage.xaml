@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="PropertyDependencyDemo.MyPage">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Save" Command="{Binding SaveCommand}" Order="Primary"/>
+    </ContentPage.ToolbarItems>
+    <TableView Intent="Data">
+        <TableSection Title="Inputs">
+            <EntryCell Label="First Name" Text="{Binding FirstName}"/>
+            <EntryCell Label="Last Name" Text="{Binding LastName}"/>
+            <SwitchCell Text="Last Name First" On="{Binding ShowLastNameFirst}"/>
+        </TableSection>
+        <TableSection Title="Outputs">
+            <EntryCell Label="Full Name" Text="{Binding FullName}"/>
+            <EntryCell Label="Initials" Text="{Binding Initials}"/>
+        </TableSection>
+    </TableView>
+</ContentPage>
