@@ -1,4 +1,5 @@
 #r "packages/FAKE/tools/FakeLib.dll"
+#load "packageHelpers.fsx"
 open Fake
 open Fake.XamarinHelper
 
@@ -34,12 +35,29 @@ Target "Run-UnitTests" (fun _ ->
         })
 )
 
-Target "Run-UITests" (fun _ ->
+Target "Run-AndroidUITests" (fun _ ->
+    let source = PackageHelpers.androidPackage()
+
+    let dest = 
+        filename source.FullName
+        |> sprintf "./RebuyApp.Android.UITests/%s" 
+        |> fileInfo
+        |> PackageHelpers.moveAndroidApk source
+
+    !! @"./**/RebuyApp.Android.UITests/bin/Release/RebuyApp.Android.UITests.dll"
+        |> NUnit (fun defaults -> { defaults with ErrorLevel = DontFailBuild })
+
+    Shell.Exec("adb", "uninstall de.rebuy.android")
+        |> ignore
+
+    DeleteFile dest.FullName
+)
+
+Target "Run-iOSUITests" (fun _ ->
     uiTestDll |> NUnit ( fun defaults -> 
         { 
             defaults with ToolPath = "/Library/Frameworks/Mono.framework/Commands/"
                           ToolName = "nunit-console4" 
-                          DisableShadowCopy = true
         })
 )
 
@@ -56,7 +74,7 @@ Target "Build-iOS" (fun _ ->
         { 
             defaults with ProjectPath = "iOS/FakeDemo.iOS.csproj"
                           OutputPath = "iOS/iPhoneSimulator/Debug"
-                          Configuration = "Debug|iPhoneSimulator"
+                          Configuration = "Ad-Hoc|iPhone"
                           Target = "Build"
         })
 )
@@ -75,5 +93,7 @@ Target "Build-Droid" (fun _ ->
   ==> "Build-Pcl"
   ==> "Build-iOS"
   ==> "Build-Droid"
+  ==> "Build-UITests"
+  ==> "Run-AndroidUITests"
 
 RunTargetOrDefault "Run-UnitTests"
