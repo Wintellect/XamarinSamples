@@ -1,5 +1,4 @@
 #r "packages/FAKE/tools/FakeLib.dll"
-#load "packageHelpers.fsx"
 open Fake
 open Fake.XamarinHelper
 
