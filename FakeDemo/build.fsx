@@ -3,13 +3,27 @@ open Fake
 open Fake.XamarinHelper
 
 let buildDir = "FakeDemo/bin/Debug"
+let testProj = !! "FakeDemo.UnitTests/FakeDemo.UnitTests.csproj"
+let testDll = !! "FakeDemo.UnitTests/bin/Debug/FakeDemo.UnitTests.dll"
 
 Target "Clean" (fun _ ->
     CleanDir buildDir
 )
 
-Target "Test" (fun _ ->
-    trace "Testing stuff..."
+Target "Build-UnitTests" (fun _ ->
+    testProj
+        |> MSBuild "FakeDemo.UnitTests\bin\Debug" "Build" [ ("Configuration", "Debug"); ("Platform", "Any CPU") ]
+        |> Log "---Unit Test build output----"
+)
+
+Target "Run-UnitTests" (fun _ ->
+    testDll |> NUnit ( fun defaults -> 
+        { 
+            defaults with ToolPath = "/Library/Frameworks/Mono.framework/Commands/"
+                          ToolName = "nunit-console4" 
+                          WorkingDir = "FakeDemo.UnitTests\bin\Debug"
+                          DisableShadowCopy = true
+        })
 )
 
 Target "Build-Pcl" (fun _ ->
@@ -25,7 +39,7 @@ Target "Build-iOS" (fun _ ->
         { 
             defaults with ProjectPath = "iOS/FakeDemo.iOS.csproj"
                           OutputPath = "iOS/iPhoneSimulator/Debug"
-                          Configuration = "Debug|iPhoneSimulator"
+                          Configuration = "Ad-Hoc|iPhone"
                           Target = "Build"
         })
 )
@@ -37,12 +51,13 @@ Target "Build-Droid" (fun _ ->
 )
 
 "Clean"
-  ==> "Build-Pcl"
-  ==> "Test"
+  ==> "Build-UnitTests"
+  ==> "Run-UnitTests"
 
 "Clean"
   ==> "Build-Pcl"
   ==> "Build-iOS"
   ==> "Build-Droid"
+  ==> "Run-UnitTests"
 
-RunTargetOrDefault "Test"
+RunTargetOrDefault "Run-UnitTests"
