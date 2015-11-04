@@ -6,8 +6,9 @@ open Fake.XamarinHelper
 let buildDir = "FakeDemo/bin/Debug"
 let testProj = !! "FakeDemo.UnitTests/FakeDemo.UnitTests.csproj"
 let testDll = !! "FakeDemo.UnitTests/bin/Debug/FakeDemo.UnitTests.dll"
-let uiTestProj = !! "UITests/FakeDemo.UITests.csproj"
+let uiTestProj = !! "UITests/FakeDemo.Droid.UITests.csproj"
 let uiTestDll = !! "UITests/bin/Debug/FakeDemo.UITests.dll"
+let iOSUITestDll = !! "FakeDemo.iOS.UITests/bin/Debug/FakeDemo.iOS.UITests.dll"
 
 Target "Clean" (fun _ ->
     CleanDir buildDir
@@ -42,7 +43,7 @@ Target "Run-AndroidUITests" (fun _ ->
         filename source.FullName
         |> sprintf "./UITests/%s"
         |> fileInfo
-        |> PackageHelpers.moveAndroidApk source
+        |> PackageHelpers.movePackageFile source
 
     uiTestDll
         |> NUnit (fun defaults -> 
@@ -55,11 +56,15 @@ Target "Run-AndroidUITests" (fun _ ->
 )
 
 Target "Run-iOSUITests" (fun _ ->
-    uiTestDll |> NUnit ( fun defaults -> 
-        { 
-            defaults with ToolPath = "/Library/Frameworks/Mono.framework/Commands/"
-                          ToolName = "nunit-console4" 
-        })
+    PackageHelpers.generateIPA()
+
+    iOSUITestDll
+        |> NUnit (fun defaults -> 
+            {
+                defaults with ErrorLevel = DontFailBuild
+                              ToolPath = "/Library/Frameworks/Mono.framework/Commands/"
+                              ToolName = "nunit-console4" 
+            })
 )
 
 Target "Build-Pcl" (fun _ ->
@@ -90,11 +95,11 @@ Target "Build-Droid" (fun _ ->
   ==> "Build-UnitTests"
   ==> "Run-UnitTests"
 
-"Clean"
-  ==> "Build-Pcl"
-  ==> "Build-iOS"
-  ==> "Build-Droid"
-  ==> "Build-UITests"
-  ==> "Run-AndroidUITests"
+//"Clean"
+//  ==> "Build-Pcl"
+//  ==> "Build-iOS"
+//  ==> "Build-Droid"
+//  ==> "Build-UITests"
+//  ==> "Run-AndroidUITests"
 
 RunTargetOrDefault "Run-UnitTests"

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-using Foundation;
+﻿using Foundation;
 using UIKit;
 
 namespace FakeDemo.iOS
@@ -14,10 +10,7 @@ namespace FakeDemo.iOS
         {
             global::Xamarin.Forms.Forms.Init();
 
-            // Code for starting up the Xamarin Test Cloud Agent
-            #if ENABLE_TEST_CLOUD
 			Xamarin.Calabash.Start();
-            #endif
 
             LoadApplication(new App());
 
@@ -25,4 +18,3 @@ namespace FakeDemo.iOS
         }
     }
 }
-

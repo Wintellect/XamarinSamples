@@ -9,8 +9,17 @@ let androidPackage() =
             defaults with ProjectPath = "Droid/FakeDemo.Droid.csproj"
         })
 
-let moveAndroidApk (source : FileInfo) (dest : FileInfo) =
+let movePackageFile (source : FileInfo) (dest : FileInfo) =
         DeleteFile dest.FullName
         Rename dest.FullName source.FullName
 
         dest
+
+let generateIPA() = 
+        iOSBuild (fun defaults -> 
+        { 
+            defaults with ProjectPath = "iOS/FakeDemo.iOS.csproj"
+                          OutputPath = "iOS/iPhone/Release"
+                          Configuration = "Ad-Hoc|iPhone"
+                          Target = "Build"
+        })
