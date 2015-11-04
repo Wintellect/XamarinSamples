@@ -1,22 +1,12 @@
-﻿using System;
-using System.IO;
-using System.Linq;
-using Xamarin.UITest;
-using Xamarin.UITest.Queries;
+﻿using Xamarin.UITest;
 
 namespace FakeDemo.UITests
 {
     public class AppInitializer
     {
-        public static IApp StartApp(Platform platform)
+        public static IApp StartApp()
         {
-            if (platform == Platform.Android)
-            {
-                return ConfigureApp.Android.StartApp();
-            }
-
-            return ConfigureApp.iOS.StartApp();
+            return ConfigureApp.Android.ApkFile("../../com.companyname.fakedemo.apk").StartApp();
         }
     }
 }
-

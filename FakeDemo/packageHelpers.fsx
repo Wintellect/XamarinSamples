@@ -5,10 +5,9 @@ open Fake.XamarinHelper
 
 let androidPackage() =
     AndroidPackage (fun defaults ->
-    {
-        defaults with
-            ProjectPath = "Droid/FakeDemo.Droid.csproj"
-    })
+        {
+            defaults with ProjectPath = "Droid/FakeDemo.Droid.csproj"
+        })
 
 let moveAndroidApk (source : FileInfo) (dest : FileInfo) =
         DeleteFile dest.FullName

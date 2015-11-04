@@ -1,6 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Linq;
+﻿using System.Linq;
 using NUnit.Framework;
 using Xamarin.UITest;
 using Xamarin.UITest.Queries;
@@ -8,30 +6,22 @@ using Xamarin.UITest.Queries;
 namespace FakeDemo.UITests
 {
     [TestFixture(Platform.Android)]
-    [TestFixture(Platform.iOS)]
     public class Tests
     {
         IApp app;
-        Platform platform;
-
-        public Tests(Platform platform)
-        {
-            this.platform = platform;
-        }
 
         [SetUp]
         public void BeforeEachTest()
         {
-            app = AppInitializer.StartApp(platform);
+            app = AppInitializer.StartApp();
         }
 
         [Test]
         public void WelcomeTextIsDisplayed()
         {
-            AppResult[] results = app.WaitForElement(c => c.Marked("Built using FAKE!"));
+            var results = app.WaitForElement(c => c.Marked("Built using FAKE!"));
 
             Assert.IsTrue(results.Any());
         }
     }
 }
-

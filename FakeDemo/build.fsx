@@ -40,17 +40,18 @@ Target "Run-AndroidUITests" (fun _ ->
 
     let dest = 
         filename source.FullName
-        |> sprintf "./RebuyApp.Android.UITests/%s" 
+        |> sprintf "./UITests/%s"
         |> fileInfo
         |> PackageHelpers.moveAndroidApk source
 
-    !! @"./**/RebuyApp.Android.UITests/bin/Release/RebuyApp.Android.UITests.dll"
-        |> NUnit (fun defaults -> { defaults with ErrorLevel = DontFailBuild })
+    uiTestDll
+        |> NUnit (fun defaults -> 
+            {
+                defaults with ErrorLevel = DontFailBuild
+                              ToolPath = "/Library/Frameworks/Mono.framework/Commands/"
+                              ToolName = "nunit-console4" 
+            })
 
-    Shell.Exec("adb", "uninstall de.rebuy.android")
-        |> ignore
-
-    DeleteFile dest.FullName
 )
 
 Target "Run-iOSUITests" (fun _ ->
