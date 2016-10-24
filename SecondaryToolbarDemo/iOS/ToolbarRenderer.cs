@@ -15,7 +15,7 @@ namespace SecondaryToolbarDemo.iOS
     {
         UIToolbar _toolbar;
         List<ToolbarItem> _secondaryItems;
-        readonly Dictionary<UIBarButtonItem, ICommand> _buttonCommands = new Dictionary<UIBarButtonItem, ICommand> ();
+        readonly Dictionary<UIBarButtonItem, ToolbarItem> _buttonCommands = new Dictionary<UIBarButtonItem, ToolbarItem> ();
 
         protected override void OnElementChanged (VisualElementChangedEventArgs e)
         {
@@ -41,7 +41,7 @@ namespace SecondaryToolbarDemo.iOS
                     button = Enum.TryParse<UIBarButtonSystemItem> (systemItemName, out systemItem) 
                         ? new UIBarButtonItem (systemItem, ToolClicked) 
                         : new UIBarButtonItem (tool.Text, UIBarButtonItemStyle.Plain, ToolClicked);
-                    _buttonCommands.Add (button, tool.Command);
+                    _buttonCommands.Add (button, tool);
                     tools.Add (button);
                 }
 
@@ -56,8 +56,8 @@ namespace SecondaryToolbarDemo.iOS
         void ToolClicked(object sender, EventArgs args)
         {
             var tool = sender as UIBarButtonItem;
-            var command = _buttonCommands [tool];
-            command.Execute (null);
+            var command = _buttonCommands[tool].Command;
+            command.Execute(_buttonCommands[tool].CommandParameter);
         }
 
         public override void ViewWillDisappear (bool animated)
